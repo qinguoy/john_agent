@@ -6,7 +6,7 @@ load_dotenv()
 
 API_KEY= os.getenv("API_KEY")
 MODEL = os.getenv("MODEL")
-BASE_URL =os.getenv("Base_url")
+BASE_URL =os.getenv("BASE_URL")
 
 chat_history=[]
 
