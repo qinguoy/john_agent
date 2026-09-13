@@ -44,16 +44,28 @@ def chat_with_history(user_prompt):
         print(f"Chat occurs error, {e}")
         return "Chat occurs error"
 
+def chat_res_json(prompt: str):
+    try:
+        if len(prompt)<1:
+            return
+        chat_history.append({"role":"user","content":prompt})
+        res = client.chat.completions.create(
+            model=MODEL,
+            messages= chat_history,
+            response_format={"type":"json_object"}
+        )
+        res_message = res.choices[0].message.content.strip()
+        chat_history.append({"role":"assistant","content":res_message})
+        return res_message
+    except Exception as e:
+        print(f"Chat occurs error,{e}")
+        return "Chat occurs error"
+
+
 
 if __name__=="__main__":
 
-    ###简单一次性对话###
-    # user_prompt="请回复调用成功"
-    # response = chat(user_prompt)
-    # print("AI response:",response)
-
-
-    ###多轮对话###
+    # ##多轮对话###
     # print("简单的AI对话，输入quit退出")
     # while True:
     #     user_prompt=input("用户:")
@@ -73,15 +85,26 @@ if __name__=="__main__":
     #     print(f"AI回复：{response}")
 
 
-    ###添加系统提示词###
-    chat_history.append({
-        "role":"system",
-        "content":"你是一个资深的软件架构师"
-    })
+    # ###添加系统提示词###
+    # chat_history.append({
+    #     "role":"system",
+    #     "content":"你是一个资深的软件架构师"
+    # })
+    # while True:
+    #     user_prompt=input("用户：")
+    #     if user_prompt=="quit":
+    #         print("对话结束")
+    #         break
+    #     response=chat_with_history(user_prompt)
+    #     print(f"AI回复：{response}")
+
+    ##### chat response format:json
+    chat_history.append({"role":"system","content":"你是一个高级java系统架构师"})
     while True:
-        user_prompt=input("用户：")
-        if user_prompt=="quit":
-            print("对话结束")
+        user_prompt =input("用户：")
+        if user_prompt == "quit":
+            print("会话结束")
             break
-        response=chat_with_history(user_prompt)
-        print(f"AI回复：{response}")
+        response_message =chat_res_json(user_prompt)
+        print(f"AI:{response_message}")
+
