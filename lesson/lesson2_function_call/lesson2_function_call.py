@@ -53,7 +53,18 @@ def chat(prompt:str) ->str:
                 "name":tool_function_name,
                 "content":tool_result
             })
-        return "调用工具结束"
+        print("正在结合工具调用，生成最终结果")
+        chat_again_res= client.chat.completions.create(
+            model=MODEL,
+            messages= chat_history
+        )
+        final_msg = chat_again_res.choices[0].message.content.strip()
+        chat_history.append({
+            "role":"assistant",
+            "content":"final_msg"
+        })
+        print("调用工具结束")
+        return final_msg
     else:
         result = response.choices[0].message.content.strip()
         print(f"ai:{result}")
