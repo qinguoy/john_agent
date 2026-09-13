@@ -44,7 +44,7 @@ def chat(prompt:str) ->str:
             tool_result=""
             if tool_func:
                 tool_result = tool_func(**tool_function_args)
-                print(tool_result)
+                #print(tool_result)
             else:
                 print(f"工具{tool_function_name} 不存在")
             chat_history.append({
@@ -61,7 +61,7 @@ def chat(prompt:str) ->str:
         final_msg = chat_again_res.choices[0].message.content.strip()
         chat_history.append({
             "role":"assistant",
-            "content":"final_msg"
+            "content":final_msg
         })
         print("调用工具结束")
         return final_msg
